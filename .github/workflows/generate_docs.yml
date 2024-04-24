@@ -1,0 +1,26 @@
+name: Generate Documentation
+
+on:
+  push:
+    tags:
+      - 'v*'  # Acest pattern se va potrivi cu tag-urile care încep cu 'v', de exemplu v1.0, v2.1 etc.
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Doxygen
+      run: sudo apt-get install doxygen
+
+    - name: Generate Documentation
+      run: doxygen Doxyfile  # Presupunem că aveți un Doxyfile configurat în repository
+
+    - name: Upload Documentation as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: documentation
+        path: /tree-traversal/html
